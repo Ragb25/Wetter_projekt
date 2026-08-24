@@ -70,10 +70,11 @@ def wetter_daten(lon, lat):
         current_wind_speed_10m = current.Variables(1).Value()
         current_relative_humidity_2m = current.Variables(2).Value()
     
-        print(f"\nCurrent time: {current.Time()}")
-        print(f"Current temperature_2m: {current_temperature_2m}")
-        print(f"Current wind_speed_10m: {current_wind_speed_10m}")
-        print(f"Current relative_humidity_2m: {current_relative_humidity_2m}")
+        a = f"Current time: {current.Time()}"
+        b = f"Current temperature_2m: {current_temperature_2m}"
+        c = f"Current wind_speed_10m: {current_wind_speed_10m}"
+        d = f"Current relative_humidity_2m: {current_relative_humidity_2m}"
+        return a, b, c, d
     except requests.exceptions.HTTPError as HTTPError:
             print(f"Nicht möglich: {HTTPError}")
     except requests.exceptions.Timeout as timeout:
@@ -84,7 +85,7 @@ def wetter_daten(lon, lat):
 """
 Hier wir die Wetterdaten von 7 Tagen gezeigt.
 """
-def vohersage(lon, lat):
+def vorhersage(lon, lat):
     try:
     # Setup the Open-Meteo API client with cache and retry on error
         cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
@@ -125,7 +126,7 @@ def vohersage(lon, lat):
         daily_data["temperature_2m_min"] = daily_temperature_2m_min
     
         daily_dataframe = pd.DataFrame(data = daily_data)
-        print("\nDaily data\n", daily_dataframe)
+        return f"\nDaily data\n", daily_dataframe
     except requests.exceptions.HTTPError as HTTPError:
                 print(f"Nicht möglich: {HTTPError}")
     except requests.exceptions.Timeout as timeout:
@@ -136,6 +137,7 @@ def vohersage(lon, lat):
 
 
 
+"""
 while True:
     stadt = input("Geben Sie die Stadt ein (oder q zum Beenden)  ")
     if stadt.lower() == "q":
@@ -147,5 +149,6 @@ while True:
         continue
     else:
          wetter_daten(lon, lat)
-         vohersage(lon, lat)
+         vorhersage(lon, lat)
          break
+"""

@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title> Wetter Seite</title>
+    </head>
+    <body>
+        <h1>Tägliche Vorhersage</h1>
+        <p>Hier kannst du das Wetter einer Stadt mittels seiner Name kugen</p><br>
+        <img src="welt_tmax_tag0.png" alt="Welt Karte" height="300" width="700"><br>
+        <a href="wetter">Hier ist ein Link zu wetter</a><br>
+        
+        <br>
+
+        <label>Geben Sie den Stadtnamen ein: </label> 
+        <input type="text" id="name">
+        <button onclick="getName()">Wetter Kugen</button>
+
+        <script>
+        function getName() {
+            let valeur = document.getElementById("name").value;
+            console.log(valeur);
+        }
+        </script>
+       
+
+    </body>
+</html>
+
