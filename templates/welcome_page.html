@@ -1,25 +1,42 @@
+
+<! Dise Seite ist die erste Seite. Hier wird der Benutzer gefragt, der
+Name einer Stadt einzugeben.>
+
 <html>
     <head>
         <title> Wetter Seite</title>
     </head>
     <body>
-        <h1>Tägliche Vorhersage</h1>
-        <p>Hier kannst du das Wetter einer Stadt mittels seiner Name kugen</p><br>
-        <img src="welt_tmax_tag0.png" alt="Welt Karte" height="300" width="700"><br>
-        <a href="wetter">Hier ist ein Link zu wetter</a><br>
+        <h1>Wetter Vorhersage</h1>
+        <h2><b>Wohin fährst du?</b></h2>
+        <img src="{{ url_for('static', filename='images/Bildschirmfoto vom 2026-08-25 11-00-11.png') }}" alt = "localisation Bild" height="50" width="50"><br>
         
-        <br>
+        
+        <img src="{{ url_for('static', filename='images/welt_tmax_tag0.png') }}" alt="Welt Karte" height="300" width="700"><br>
+        <p>
+            Planst du gerade einen Urlaub und machst dir Gedanken über das Wetter? Wir haben gute Nachrichten <br>
+            für dich! Gib einfach den Namen der Stadt ein, in die du reisen möchtest, und erfahre, wie das <br>
+            Wetter dort in den nächsten sieben Tagen wird.
+        </p><br>
 
-        <label>Geben Sie den Stadtnamen ein: </label> 
+        
+        
+
+
+        <label>Geben Sie den Stadtnamen ein: </label>
         <input type="text" id="name">
-        <button onclick="getName()">Wetter Kugen</button>
-
+        <button onclick="getName()">Wetter anzeigen</button>   
+            
+        
         <script>
-        function getName() {
-            let valeur = document.getElementById("name").value;
-            console.log(valeur);
-        }
+            function getName() {
+                let valeur = document.getElementById("name").value;
+                let wetter_link = `http://127.0.0.1:5000/wetter?ville=${encodeURIComponent(valeur)}`;
+
+                window.location.href = wetter_link
+            }
         </script>
+
        
 
     </body>
