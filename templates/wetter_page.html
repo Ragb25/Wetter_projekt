@@ -1,0 +1,19 @@
+<! Hier ist die Seite, wo wir die entsprechenden Wetterdaten aufrufen werden>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Wetter Daten</title>
+    </head>
+    <body>
+        <h1>{{ stadt_name }}</h1>
+        <img src="{{url_for('static', filename='images/Bildschirmfoto vom 2026-08-25 11-00-11.png')}}" alt="localisation Bild" height="50" width="50"><br>
+        
+        <p>
+            Land: <b>{{land}}</b>,
+            Landkreis: <b>{{region}}</b>,
+            Bundesland: <b>{{info_random}}</b>, 
+        </p>
+    </body>
+
+</html>

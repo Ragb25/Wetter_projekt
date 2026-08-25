@@ -11,6 +11,8 @@ Diese Methode ermöglich mit der Name einer Stadt Informationen wie Longitude un
 Somit können wie die Daten einfach mit openmeteo-API hochladen.
 """
 def getInfo(stadt):
+    if not stadt:
+        return None
     lat, lon = None, None
     header = {
         "User-Agent": "Mein erstes Projekt mit einer API Nutzung (ragb25@tu-clausthal.de)",
@@ -22,6 +24,8 @@ def getInfo(stadt):
         "limit": 1,
         "addressdetails": 1
     }
+    
+    
     url = f"https://nominatim.openstreetmap.org/search"
 
     try:
@@ -29,19 +33,22 @@ def getInfo(stadt):
         data = responses.json()
         lon = data[0]["lon"]
         lat = data[0]["lat"]
-        print("Die Details wurde mit Erfolgt hochgeladen.")
+        adress = data[0]["address"]
+        #print(adress)
     except requests.exceptions.HTTPError as HTTPError:
         print(f"Nicht möglich: {HTTPError}")
     except requests.exceptions.Timeout as timeout:
         print(f"nicht möglich: {timeout}")
     except requests.ConnectionError as connectionError:
         print(f"nicht möglich: {connectionError}")
-    return lon, lat
+    return lon, lat, adress
 
 """
 Diese Funktion nutzt die Latitude und Longitude, um die Wetterdaten der entsprechenden Stadt mittels openmeteo-API zu bestimmen. 
 """
 def wetter_daten(lon, lat):
+    if not lon or not lat:
+         return None
     try:
         # Setup the Open-Meteo API client with cache and retry on error
         cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
@@ -83,9 +90,11 @@ def wetter_daten(lon, lat):
         print(f"nicht möglich: {connectionError}")
 
 """
-Hier wir die Wetterdaten von 7 Tagen gezeigt.
+Hier wird die Wetterdaten von 7 Tagen gezeigt.
 """
 def vorhersage(lon, lat):
+    if not lon or not lat:
+         return None
     try:
     # Setup the Open-Meteo API client with cache and retry on error
         cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
@@ -137,18 +146,24 @@ def vorhersage(lon, lat):
 
 
 
+
+
+
+
 """
 while True:
     stadt = input("Geben Sie die Stadt ein (oder q zum Beenden)  ")
     if stadt.lower() == "q":
          break
     
-    lon, lat = getInfo(stadt)
+    lon, lat, adress = getInfo(stadt)
     if not lon or not lat:
         print(f"Fehler: {stadt} ist keine gültige Stadt")
         continue
     else:
-         wetter_daten(lon, lat)
-         vorhersage(lon, lat)
-         break
+        print("1:", adress)
+        print("2", wetter_daten(lon, lat))
+        print("3", vorhersage(lon, lat))
+        break
+
 """
