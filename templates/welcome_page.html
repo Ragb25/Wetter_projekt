@@ -5,11 +5,60 @@ Name einer Stadt einzugeben.>
 <html>
     <head>
         <title> Wetter Seite</title>
+        <style>
+            body {
+                background-color: aliceblue;
+                margin: 0;
+                padding: 0;
+                
+            }
+            
+            .header {
+                background-image: url("/static/images/header.png");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                padding: 55px;
+            }
+
+            
+            h3 { /*WetterVohersage */
+                font-family: 'Roboto', sans-serif;
+                color: rgb(250, 250, 252);
+                font-size: 25px;
+            }
+            .search {
+                align-items: center;
+            }
+        
+            
+            
+
+
+
+        </style>
     </head>
     <body>
-        <h1>Wetter Vorhersage</h1>
-        <h2><b>Wohin fährst du?</b></h2>
-        <img src="{{ url_for('static', filename='images/Bildschirmfoto vom 2026-08-25 11-00-11.png') }}" alt = "localisation Bild" height="50" width="50"><br>
+        <div class="header">
+            <h3>WetterVorhersage</h3>
+            <form method="get">
+            <input class="search" type="text" id="name">
+            </form>
+            <button onclick="getName()">Wetter anzeigen</button>    
+        
+            <script>
+                function getName() {
+                    let valeur = document.getElementById("name").value;
+                    let wetter_link = `http://127.0.0.1:5000/wetter?ville=${encodeURIComponent(valeur)}`;
+
+                    window.location.href = wetter_link
+                }
+            </script>
+            
+        </div>
+        
+        
+
         
         
         <img src="{{ url_for('static', filename='images/welt_tmax_tag0.png') }}" alt="Welt Karte" height="300" width="700"><br>
@@ -22,20 +71,7 @@ Name einer Stadt einzugeben.>
         
         
 
-        <form method="get">
-            <label>Stadtname </label>
-            <input type="text" id="name">
-        </form>
-        <button onclick="getName()">Wetter anzeigen</button>    
         
-        <script>
-            function getName() {
-                let valeur = document.getElementById("name").value;
-                let wetter_link = `http://127.0.0.1:5000/wetter?ville=${encodeURIComponent(valeur)}`;
-
-                window.location.href = wetter_link
-            }
-        </script>
 
        
 

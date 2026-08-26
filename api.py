@@ -5,6 +5,8 @@ import openmeteo_requests
 import pandas as pd
 import requests_cache
 from retry_requests import retry
+from datetime import datetime
+from flask import jsonify
 
 """
 Diese Methode ermöglich mit der Name einer Stadt Informationen wie Longitude und Latitude zu kriegen.
@@ -33,7 +35,7 @@ def getInfo(stadt):
         data = responses.json()
         lon = data[0]["lon"]
         lat = data[0]["lat"]
-        adress = data[0]["address"]
+        address = data[0]["address"]
         #print(adress)
     except requests.exceptions.HTTPError as HTTPError:
         print(f"Nicht möglich: {HTTPError}")
@@ -41,7 +43,7 @@ def getInfo(stadt):
         print(f"nicht möglich: {timeout}")
     except requests.ConnectionError as connectionError:
         print(f"nicht möglich: {connectionError}")
-    return lon, lat, adress
+    return lon, lat, address
 
 """
 Diese Funktion nutzt die Latitude und Longitude, um die Wetterdaten der entsprechenden Stadt mittels openmeteo-API zu bestimmen. 
@@ -67,20 +69,16 @@ def wetter_daten(lon, lat):
     
         # Process first location. Add a for-loop for multiple locations or weather models
         response = responses[0]
-        print(f"Coordinates: {response.Latitude()}°N {response.Longitude()}°E")
-        print(f"Elevation: {response.Elevation()} m asl")
-        print(f"Timezone difference to GMT+0: {response.UtcOffsetSeconds()}s")
-    
         # Process current data. The order of variables needs to be the same as requested.
         current = response.Current()
         current_temperature_2m = current.Variables(0).Value()
         current_wind_speed_10m = current.Variables(1).Value()
         current_relative_humidity_2m = current.Variables(2).Value()
     
-        a = f"Current time: {current.Time()}"
-        b = f"Current temperature_2m: {current_temperature_2m}"
-        c = f"Current wind_speed_10m: {current_wind_speed_10m}"
-        d = f"Current relative_humidity_2m: {current_relative_humidity_2m}"
+        a = current.Time()
+        b = current_temperature_2m
+        c = current_wind_speed_10m
+        d = current_relative_humidity_2m
         return a, b, c, d
     except requests.exceptions.HTTPError as HTTPError:
             print(f"Nicht möglich: {HTTPError}")
@@ -113,10 +111,6 @@ def vorhersage(lon, lat):
     
         # Process first location. Add a for-loop for multiple locations or weather models
         response = responses[0]
-        print(f"Coordinates: {response.Latitude()}°N {response.Longitude()}°E")
-        print(f"Elevation: {response.Elevation()} m asl")
-        print(f"Timezone difference to GMT+0: {response.UtcOffsetSeconds()}s")
-    
         # Process daily data. The order of variables needs to be the same as requested.
         daily = response.Daily()
         daily_temperature_2m_max = daily.Variables(0).ValuesAsNumpy()
@@ -142,8 +136,22 @@ def vorhersage(lon, lat):
         print(f"nicht möglich: {timeout}")
     except requests.ConnectionError as connectionError:
         print(f"nicht möglich: {connectionError}")
-    
 
+"""
+Diese Funktion dienst dazu, alle Daten so zu organisieren, dass sie direkt von der
+app benutzt werden können.
+"""
+def daten_organisation(lon, lat):
+    timestamp, current_temperature, current_wind_speed, current_relative_humidity = wetter_daten(lon, lat)
+
+    date = datetime.fromtimestamp(timestamp)
+
+    wetter_vorhersage = vorhersage(lon, lat)
+    
+    return  date, float("{:.3f}".format(current_temperature)), float("{:.3f}".format(current_wind_speed)), current_relative_humidity, wetter_vorhersage[1]
+
+    
+     
 
 
 
@@ -151,6 +159,7 @@ def vorhersage(lon, lat):
 
 
 """
+
 while True:
     stadt = input("Geben Sie die Stadt ein (oder q zum Beenden)  ")
     if stadt.lower() == "q":
@@ -161,9 +170,23 @@ while True:
         print(f"Fehler: {stadt} ist keine gültige Stadt")
         continue
     else:
-        print("1:", adress)
-        print("2", wetter_daten(lon, lat))
-        print("3", vorhersage(lon, lat))
+       
+        a,b,c,d, wetter_vorhersage = daten_organisation(lon, lat)
+        for i in wetter_vorhersage:
+            if i == "date":
+                date = wetter_vorhersage[i]
+            elif i == "temperature_2m_max":
+                temperatur_max = wetter_vorhersage[i]
+            elif i == "temperature_2m_min":
+                    temperatur_min = wetter_vorhersage[i]
+            else: break
+        tag = "Tag    date                                           Temperatur max    Temperatur min\n"
+        for i in range(7):
+           tag += f"{i+1}      {date[i]}                      {temperatur_max[i]:.1f}              {float("{:.1f}".format(temperatur_min[i]))}\n"
+              
+        print(tag)
+            
+        
         break
 
 """
