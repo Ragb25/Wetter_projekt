@@ -10,15 +10,20 @@ from flask import render_template
 app = Flask(__name__)
 @app.route("/")
 def welcome_page():
-    return render_template("welcome_page.html")
+# Wert von Hannover für das Welcome_page
+    hannover_lon, hannover_lan, hannover_address = getInfo("hannover")
+    hannover_stadt, hannover_land = "Hannover", "Deutschland"
+    hannover_temperatur = int(wetter_daten(hannover_lon, hannover_lan)[1])
+
+    return render_template("welcome_page.html",
+        hannover_temperatur = hannover_temperatur, hannover_stadt = hannover_stadt, hannover_land = hannover_land,
+    )
 
 
 @app.route("/wetter")
 def wetter():
     stadt = request.args.get("ville")
     lon, lat, address = getInfo(stadt)
-    today_wetter = wetter_daten(lon, lat)
-    vorhersage_wetter = vorhersage(lon, lat)
 
     #Stadtname, Land, Region und postalcode mitnehmen.
     i=1
@@ -53,7 +58,6 @@ def wetter():
     for i in range(7):
         tag += f"{i+1}      {date[i]}                      {temperatur_max[i]:.1f}                  {float("{:.1f}".format(temperatur_min[i]))}\n"
             
- 
 
     return render_template(
         "wetter_page.html",
@@ -63,5 +67,6 @@ def wetter():
         info_random = info_3,
         current_wetter = current_wetter,
         tag = tag,
+        
         
 )

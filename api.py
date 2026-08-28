@@ -158,35 +158,18 @@ def daten_organisation(lon, lat):
 
 
 
-"""
+
 
 while True:
-    stadt = input("Geben Sie die Stadt ein (oder q zum Beenden)  ")
-    if stadt.lower() == "q":
-         break
-    
-    lon, lat, adress = getInfo(stadt)
+    lon, lat, adress = getInfo("Hannover")
     if not lon or not lat:
         print(f"Fehler: {stadt} ist keine gültige Stadt")
         continue
     else:
        
-        a,b,c,d, wetter_vorhersage = daten_organisation(lon, lat)
-        for i in wetter_vorhersage:
-            if i == "date":
-                date = wetter_vorhersage[i]
-            elif i == "temperature_2m_max":
-                temperatur_max = wetter_vorhersage[i]
-            elif i == "temperature_2m_min":
-                    temperatur_min = wetter_vorhersage[i]
-            else: break
-        tag = "Tag    date                                           Temperatur max    Temperatur min\n"
-        for i in range(7):
-           tag += f"{i+1}      {date[i]}                      {temperatur_max[i]:.1f}              {float("{:.1f}".format(temperatur_min[i]))}\n"
-              
-        print(tag)
+        tag = wetter_daten(lon, lat)
+        print(int(tag[1]))
             
         
         break
 
-"""
