@@ -158,8 +158,7 @@ def daten_organisation(lon, lat):
 
 
 
-
-
+"""
 while True:
     lon, lat, adress = getInfo("Hannover")
     if not lon or not lat:
@@ -172,4 +171,7 @@ while True:
             
         
         break
+"""
+
+
 
