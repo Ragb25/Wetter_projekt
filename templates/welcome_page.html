@@ -32,13 +32,13 @@ Name einer Stadt einzugeben.>
                 margin-top: -40;
                 margin-left: -30px;
             }
-            
+            /* Der Style von h4 habe ich aus glassmorphism.com kopiert*/
             h4 {
                 /* Disposition et alignement des éléments */
 
                 justify-content: space-between;
                 padding: 12px 20px;
-                margin-top: 20px;
+                margin-top: 10px;
                 
                 /* Bords arrondis */
                 border-radius: 12px;
@@ -70,7 +70,7 @@ Name einer Stadt einzugeben.>
                 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
                 font-size: 10px;
                 margin-left: -30px;
-                margin-top: 150px;
+                margin-top: 250px;
             }
             .Welt_bild{
                 display: block;
@@ -79,34 +79,45 @@ Name einer Stadt einzugeben.>
                 margin-top: 50px;
             
             }
+            .wetter_anzeigen{
+                margin-top: 20px;
+                margin-left: 35px;
+                background-color: rgb(141, 126, 126);
+                color: #ffffff;
+                top: 70%;
+            }
 
         
             
         
-            
-            
-
-
-
         </style>
     </head>
+
+
+    
     <body>
         <h3>WetterVorhersage</h3> 
         <div class="header">
-            <form method="get">
-                <input type="text" id="name">
-                
-            </form> 
-            <button onclick="getName()">Wetter anzeigen</button> 
-            <script>
-                function getName() {
-                let valeur = document.getElementById("name").value;
-                let wetter_link = `http://127.0.0.1:5000/wetter?ville=${encodeURIComponent(valeur)}`;
 
-                window.location.href = wetter_link
-                }
-            </script>
-            <h4><span>{{hannover_stadt}}, {{hannover_land}}</span> <span>☁️ {{hannover_temperatur}}°C</span></h4>
+        <form method="get" onsubmit="getName(); return false;">
+            <input type="text" id="name"><br>
+            <button class= "wetter_anzeigen" type="submit">Wetter anzeigen</button>
+        </form>
+
+        <script>
+            function getName() {
+                let valeur = document.getElementById("name").value;
+
+                let wetter_link =
+                    `http://127.0.0.1:5000/wetter?ville=${encodeURIComponent(valeur)}`;
+
+                window.location.href = wetter_link;
+            }
+        </script>
+
+
+            
+            <h4><span>📍 {{hannover_stadt}}, {{hannover_land}}</span> <span>     ☁️ {{hannover_temperatur}}°C</span></h4>
             <br>
             
         </div>

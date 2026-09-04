@@ -4,41 +4,77 @@
 <html>
     <head>
         <title> Wetter Daten</title>
+        
+        <style>
+            body {
+                background-color: rgba(228, 234, 242);
+                margin: 0;
+                padding: 0;
+                font-size: 22px;
+                padding: 45px;
+                background-image: url("/static/images/header.png");
+                background-repeat: no-repeat;
+                background-position: 0px -350px;
+                      
+            }
+            h3 { /*WetterVohersage */
+                font-family: 'Roboto', sans-serif;
+                color: rgb(252, 251, 250);
+                font-size: 25px;
+                margin-top: -40px;
+                margin-left: -30px;
+            }
+            h1 {
+                color: aliceblue;
+                font-size: 50px;
+                margin-top: 60px;
+                
+            }
+
+            .localisation {
+                /* Disposition et alignement des éléments */
+
+                justify-content: space-between;
+                padding: 12px 20px;
+                margin-top: -30px;
+                margin-left: -40px;
+       
+                
+                /* Ombre douce sous la carte */
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+
+                /* Stylisation du texte */
+                color: #ffffff;
+                font-family: system-ui, -apple-system, sans-serif;
+                font-weight: 400;
+            
+            }
+            h2 {
+                margin-left: 40px;
+                color: darkblue;
+                margin-top: 70px;
+            }
+            .kontakt {
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                font-size: 10px;
+                margin-left: -30px;
+                margin-top: 100px;
+            }
+
+            
+        </style>
     </head>
     <body>
+        <h3>WetterVorhersage</h3> 
         <h1>{{ stadt_name }}</h1>
-        <img src="{{url_for('static', filename='images/Bildschirmfoto vom 2026-08-25 11-00-11.png')}}" alt="localisation Bild" height="50" width="50"><br>
         
         
-        <p>
-            Land: <b>{{land}}</b>,
-            Landkreis: <b>{{region}}</b>,
-            Bundesland: <b>{{info_random}}</b>, 
+        <p class="localisation">
+            📍<b>{{land}}, <b>{{region}}, <b>{{info_random}} 
         </p>    
         <br>
-        <h2> Das Wetter in {{ stadt_name }} jetzt</h2>
+        <h2> Das Wetter in {{ stadt_name }}</h2>
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <p>
-
-        </p>
         <pre>
             {{current_wetter}}
         </pre>
@@ -47,6 +83,15 @@
         <pre>
                 {{tag}}
         </pre>
+
+        <p class="kontakt">
+            <b>
+                Ramane Gbatkom Mouliom Abdel<br>
+                E-mail:mouliommiguel4@gmail.Com<br>
+                Github: <a href="https://github.com/Ragb25">github.com/Ragb25</a> 
+            </b>
+        </p>
+
         
     </body>
 
