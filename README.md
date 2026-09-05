@@ -48,7 +48,7 @@ pip install flask requests openmeteo-requests requests-cache retry-requests pand
 
 **3. Anwendung starten**
 ```bash
-python3 app.py
+flask --app app run
 ```
 
 **4. Im Browser öffnen**
